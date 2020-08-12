@@ -109,6 +109,9 @@ print(xtable(comp, align = "ll|rrrrr",
 #-------------------------------------------------------
 # One-step-ahead forecast
 
+## the design is based on the "ili_national" example in
+## https://github.com/reichlab/article-disease-pred-with-kcde/blob/master/inst/code/prediction/sarima-prediction.R
+
 for(i in 1 : length(beta_formulas)){
   
   ptm <- proc.time()
