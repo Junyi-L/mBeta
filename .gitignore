@@ -3,4 +3,5 @@
 .RData
 .Ruserdata
 .pdf
-Plots/.pdf
+Plots/*.pdf
+Plots/Fan/*.pdf
