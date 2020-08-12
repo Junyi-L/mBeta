@@ -1,0 +1,37 @@
+% latex table generated in R 3.6.2 by xtable 1.8-4 package
+% Wed Aug 12 10:53:27 2020
+\begin{table}[ht]
+\centering
+\begingroup\fontsize{9pt}{10pt}\selectfont
+\begin{tabular}{ll|rrrr}
+  \hline
+Model & Subset & LS & p-value & maxLS & DSS \\ 
+  \hline
+M1: $\beta_{r,k} = \beta_{k}$, $\beta_{r}^{(\nu)} = \beta^{(\nu)}$, $\beta^{(\phi)} = \beta^{(\phi)}$, $\gamma_r = \gamma$ & All weeks & --47.11(5) & 0.21 & --45.56(5) & --112.20(5) \\ 
+  M2: $\beta_{r}^{(\nu)} = \beta^{(\nu)}$, $\beta^{(\phi)} = \beta^{(\phi)}$, $\gamma_r = \gamma$ &  & --47.18(4) & 0.51 & --45.80(4) & --112.31(4) \\ 
+  M3: $\gamma_r = 0$ &  & --47.21(3) & 0.32 & --46.02(3) & --112.37(2) \\ 
+  M4: $\gamma_r = \gamma$ &  & --47.24(1) &  & --46.09(2) & --112.42(1) \\ 
+  M5: full model &  & --47.21(2) & 0.69 & --46.09(1) & --112.34(3) \\ 
+   \hline
+M1: $\beta_{r,k} = \beta_{k}$, $\beta_{r}^{(\nu)} = \beta^{(\nu)}$, $\beta^{(\phi)} = \beta^{(\phi)}$, $\gamma_r = \gamma$ & High Incidence & --43.86(5) & 0.37 & --42.32(5) & --105.69(5) \\ 
+  M2: $\beta_{r}^{(\nu)} = \beta^{(\nu)}$, $\beta^{(\phi)} = \beta^{(\phi)}$, $\gamma_r = \gamma$ &  & --43.94(2) & 0.71 & --42.58(4) & --105.85(3) \\ 
+  M3: $\gamma_r = 0$ &  & --43.93(3) & 0.14 & --42.93(3) & --105.87(2) \\ 
+  M4: $\gamma_r = \gamma$ &  & --43.99(1) &  & --43.06(1) & --106.01(1) \\ 
+  M5: full model &  & --43.93(4) & 0.10 & --43.05(2) & --105.84(4) \\ 
+   \hline
+\end{tabular}
+\endgroup
+\caption{Model performance in terms of mean log score (LS), 
+             mean Dawid-Sebastiani score (DSS), and maximum log score (maxLS) 
+             for one-week-ahead forecasts.
+             Ranks are shown in bracket.
+             The "all weeks" group shows average scores over the 
+             whole test period (208 weeks), 
+             whereas the "High Incidence" group shows
+             averages over the high incidence periods only (132 weeks).
+             Models are ordered by model complexity.
+             The Monte Carlo p-values for differences in mean log scores
+             are based on 9999 random permutations,
+             comparing each model against the best model in each subset.} 
+\label{tab:forecast}
+\end{table}
