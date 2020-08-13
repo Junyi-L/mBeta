@@ -2,41 +2,10 @@ library(cdcfluview)
 library(lubridate)
 library(data.table)
 library(dplyr)
+library(MMWRweek)
+stopifnot(packageVersion("MMWRweek") >= "0.1.3")
+## contains Sebastian's patch for non-English locales
 
-#-------------------------------------------------------------------------------------------
-# Functions MMWRweekday, start_date, MMWRweek2Date are from package MMWRweek
-# Version: 0.1.2
-# Date: 2015-11-24
-# Author: Jarad Niemi <niemi@iastate.edu>
-# https://github.com/jarad/MMWRweek
-
-# Weekday is modified by Sebastian Meyer for non-English locales.
-MMWRweekday <- function(date) {
-  factor(strftime(as.Date(date), "%w"), # Sunday is 0
-         levels = 0:6,
-         labels = c('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'))
-}
-
-start_date = function(year) {
-  # Finds start state for this calendar year
-  jan1 = as.Date(paste(year, '-01-01', sep=''))
-  wday = as.numeric(MMWRweekday(jan1))
-  jan1 - (wday-1) + 7*(wday>4)
-}
-
-MMWRweek2Date <- function(MMWRyear, MMWRweek, MMWRday = NULL) {
-  stopifnot(all(is.numeric(MMWRyear)))
-  stopifnot(all(is.numeric(MMWRweek)))
-  stopifnot(all(0 < MMWRweek & MMWRweek < 54))
-  stopifnot(length(MMWRyear) == length(MMWRweek))
-  if (is.null(MMWRday)) 
-    MMWRday = rep(1, length(MMWRweek))
-  stopifnot(all(0 < MMWRday & MMWRday < 8))
-  jan1 = start_date(MMWRyear)
-  return(jan1 + (MMWRweek - 1) * 7 + MMWRday - 1)
-  
-}
-#-----------------------------------------------------------------------------------
 usflu <- ilinet(region = "national", years = 1997:2019)
 # load data date: 03.03.2020
 usflu <- as.data.frame(usflu)
