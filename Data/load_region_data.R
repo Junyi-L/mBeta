@@ -8,6 +8,7 @@ stopifnot(packageVersion("MMWRweek") >= "0.1.3")
 usflu <- ilinet(region = "hhs", years = 1997:2019)
 # load data date: 03.03.2020
 usflu <- as.data.frame(usflu)
+usflu <- subset(usflu, year <= 2019)  # discard incomplete 19/20 season
 
 data <- usflu[c("region_type", "region", "year", "week", "weighted_ili")]
 
@@ -20,8 +21,6 @@ data[, InPeriod := week/week_number, by = year]
 
 data[, time := MMWRweek2Date(MMWRyear = year, MMWRweek = week)]
 data$time_index <- as.integer(data$time -  ymd(paste("1970", "01", "01", sep = "-")))
-
-#data <- data[data$year <= 2019,]
 
 data <- data.frame(data)
 
