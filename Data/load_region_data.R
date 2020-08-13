@@ -46,6 +46,8 @@ data <- transmute(usflu,
                   year = year,
                   week = week,
                   weighted_ili = as.numeric(weighted_ili))
+# for cdcfluview 0.9.0 missing values are replaced by zeros.
+# replace zeros back to missing values.
 data[data$weighted_ili == 0,]$weighted_ili <- NA
 
 data <- data.table(data)
