@@ -4,7 +4,7 @@ result4 <- readRDS(file = here::here("./Results/Forecast_mBeta4.RData"))
 load(file = here::here("./Data/Region_data_holidays.RData"))
 # General setting
 library("surveillance")
-library("HIDDA.forecasting")
+library("HIDDA.forecasting")  # from https://HIDDA.github.io/forecasting/
 library(ggplot2)
 pal <- colorRampPalette(c("darkgreen", "gray93"))
 width <- 5
