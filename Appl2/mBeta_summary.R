@@ -202,5 +202,4 @@ print(xtable(sum_table2, align = "lll|rrrr",
       sanitize.text.function=function(x){x},
       file=here::here("./Results/mBeta_sum.tex"),
       size="\\fontsize{9pt}{10pt}\\selectfont",
-      xtable.comment = FALSE,
-      timestamp = NULL)
+      comment = FALSE)
