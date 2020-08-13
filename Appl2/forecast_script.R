@@ -1,7 +1,6 @@
 library(tsibble)
 library(betareg)
 library(data.table)
-library(Formula)
 library(xtable)
 
 load(file = here::here("./Data/Region_data_holidays.RData"))
