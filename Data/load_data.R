@@ -1,7 +1,6 @@
 library(cdcfluview)
 library(lubridate)
 library(data.table)
-library(dplyr)
 library(MMWRweek)
 stopifnot(packageVersion("MMWRweek") >= "0.1.3")
 ## contains Sebastian's patch for non-English locales
@@ -11,12 +10,7 @@ usflu <- ilinet(region = "national", years = 1997:2019)
 usflu <- as.data.frame(usflu)
 usflu <- subset(usflu, year <= 2019)  # discard incomplete 19/20 season
 
-data <- transmute(usflu,
-                  region_type = region_type,
-                  region = region,
-                  year = year,
-                  week = week,
-                  weighted_ili = as.numeric(weighted_ili))
+data <- usflu[c("region_type", "region", "year", "week", "weighted_ili")]
 data[data$weighted_ili == 0,]$weighted_ili <- NA
 
 data <- as.data.table(data)
