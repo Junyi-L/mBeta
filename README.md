@@ -9,10 +9,6 @@ The code consists of two parts
 
 * Application 2 assesses forecasts of different variants of multivariate beta model. 
 
-Results have been produced in R 3.6.2 using the following versions of
-the modelling packages: betareg 3.1-3, forecast 8.12, surveillance 1.17.3,
-HIDDA.forecasting 1.1.0, Formula 1.2-3.
-
 
 ## Repository structure
 
@@ -50,5 +46,4 @@ HIDDA.forecasting 1.1.0, Formula 1.2-3.
     
     * Appl2/mBeta_summary.R compares forecast performance of mBeta models.
     
-* `Results/` contains results of both applications.
-    
+* `Results/` have been produced in R 3.6.2 using betareg 3.1-3 and forecast 8.12.
