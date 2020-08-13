@@ -72,6 +72,9 @@ print(xtable(summary_table, align = "ccl|rrrrr",
       include.rownames = FALSE,
       hline.after = c(-1, 0, 5, 6),
       sanitize.text.function=function(x){x},
-      file=here::here("./Results/flusummary.tex"))
+      file=here::here("./Results/flusummary.tex"),
+      xtable.comment = FALSE,
+      timestamp = NULL
+      )
 #saveRDS(summary_table, file = here::here("./Theory_results/flusummary.rds"))
 

@@ -101,7 +101,9 @@ print(xtable(comp, align = "ll|rrrrr",
       hline.after = c(-1, 0, 5),
       sanitize.text.function=function(x){x},
       file=here::here("./Results/mBetafit.tex"),
-      size="\\fontsize{9pt}{10pt}\\selectfont")
+      size="\\fontsize{9pt}{10pt}\\selectfont",
+      xtable.comment = FALSE,
+      timestamp = NULL)
 #----------------------------------------
 #
 

@@ -111,7 +111,9 @@ sum_table2_sub[, maxDSS :=
                  paste0(formatC(round(maxDSS, digits = 2), format='f', digits=2 ), "(",rank(maxDSS), ")")]
 
 
-RNGkind(sample.kind="Rounding")
+RNGversion("3.6.2")
+set.seed(20200812)
+
 library(surveillance)
 Per_43 <- permutationTest(result_table$LS[result_table$Model == "M4"],
                           result_table$LS[result_table$Model == "M3"],
@@ -199,4 +201,6 @@ print(xtable(sum_table2, align = "lll|rrrr",
       hline.after = c(-1, 0, 5, 10),
       sanitize.text.function=function(x){x},
       file=here::here("./Results/mBeta_sum.tex"),
-      size="\\fontsize{9pt}{10pt}\\selectfont")
+      size="\\fontsize{9pt}{10pt}\\selectfont",
+      xtable.comment = FALSE,
+      timestamp = NULL)
