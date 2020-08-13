@@ -1,5 +1,6 @@
 library(cdcfluview)
 library(lubridate)
+library(data.table)
 library(dplyr)
 
 #-------------------------------------------------------------------------------------------
