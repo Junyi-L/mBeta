@@ -19,18 +19,14 @@ data <- transmute(usflu,
                   weighted_ili = as.numeric(weighted_ili))
 data[data$weighted_ili == 0,]$weighted_ili <- NA
 
-data <- data.table(data)
+data <- as.data.table(data)
 data[, week_number := max(week), by = year]
 data[, InPeriod := week/week_number, by = year]
 
 data[, time := MMWRweek2Date(MMWRyear = year, MMWRweek = week)]
 data$time_index <- as.integer(data$time -  ymd(paste("1970", "01", "01", sep = "-")))
 
-#data <- data[data$year <= 2018,]
-
-data <- data.frame(data)
+data <- as.data.frame(data)
 
 
-save(data,file = here::here("./Data/usflu.RData"))
-
-
+save(data, file = here::here("Data", "usflu.RData"))
