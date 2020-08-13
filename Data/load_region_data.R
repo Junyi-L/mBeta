@@ -1,5 +1,6 @@
 library(cdcfluview)
 library(lubridate)
+library(data.table)
 library(MMWRweek)
 stopifnot(packageVersion("MMWRweek") >= "0.1.3")
 ## contains Sebastian's patch for non-English locales
