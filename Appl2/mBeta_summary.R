@@ -12,7 +12,7 @@ result_list_old <- list(result1,
                         result5)
 model_list <- c( "M1",
                  "M2",
-                 "M3", 
+                 "M3",
                  "M4",
                  "M5")
 result_list <- lapply(result_list_old, function(x){return(x$result)})
@@ -20,15 +20,15 @@ result_list <- lapply(result_list_old, function(x){return(x$result)})
 npar_vector <- unlist(lapply(result_list_old, function(x){return(x$npar)}))
 
 nrows <- nrow(result_list[[1]])
-result_table <- data.table(time = rep(result_list[[1]]$data_set.time, 
-                                      times = length(result_list)), 
-                           region = rep(result_list[[1]]$data_set.region, 
+result_table <- data.table(time = rep(result_list[[1]]$data_set.time,
+                                      times = length(result_list)),
+                           region = rep(result_list[[1]]$data_set.region,
                                         times = length(result_list)),
-                           season = rep(result_list[[1]]$data_set.season, 
+                           season = rep(result_list[[1]]$data_set.season,
                                         times = length(result_list)),
-                           Model = rep(model_list, 
+                           Model = rep(model_list,
                                        each = nrow(result_list[[1]])),
-                           Inseason = rep(result_list[[1]]$data_set.InSeason, 
+                           Inseason = rep(result_list[[1]]$data_set.InSeason,
                                           times = length(result_list)),
                            LS = NA,
                            AE = NA,
@@ -43,7 +43,7 @@ for(i in 1:length(result_list)){
   DSS <- c(DSS, result$DS_score)
   AE <- c(AE, result$AE)
   #npar <- c(npar, result$npar)
-  
+
 }
 result_table$LS <- LS
 result_table$AE <- AE
@@ -60,7 +60,7 @@ sum_table <- setDT(result_table_avgR)[ , list(LS = mean(LS),
                                        by = .(season, Model)]
 setkey(sum_table, season)
 
-sum_table_sub <- setDT(result_table_avgR)[Inseason == TRUE , 
+sum_table_sub <- setDT(result_table_avgR)[Inseason == TRUE ,
                                           list(LS = mean(LS),
                                                maxLS = max(LS),
                                                DSS = mean(DSS),
@@ -181,12 +181,12 @@ sum_table2$LS <- gsub("-","--",sum_table2$LS)
 sum_table2$maxLS <- gsub("-","--",sum_table2$maxLS)
 sum_table2$DSS <- gsub("-","--",sum_table2$DSS)
 print(xtable(sum_table2, align = "lll|rrrr",
-             caption = 'Model performance in terms of mean log score (LS), 
-             mean Dawid-Sebastiani score (DSS), and maximum log score (maxLS) 
+             caption = 'Model performance in terms of mean log score (LS),
+             mean Dawid-Sebastiani score (DSS), and maximum log score (maxLS)
              for one-week-ahead forecasts.
              Ranks are shown in bracket.
-             The "all weeks" group shows average scores over the 
-             whole test period (208 weeks), 
+             The "all weeks" group shows average scores over the
+             whole test period (208 weeks),
              whereas the "High Incidence" group shows
              averages over the high incidence periods only (132 weeks).
              Models are ordered by model complexity.

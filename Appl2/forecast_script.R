@@ -10,7 +10,7 @@ source(file = here::here("./Appl2/fit_mBeta.R"))
 source(file = here::here("./Appl2/forecast_mBeta.R"))
 
 data <- as.data.table(data)
-# if some regions have missing data at one time point, 
+# if some regions have missing data at one time point,
 # the all observations at this time point are taken as missing.
 data[, miss := sum(is.na(weighted_ili_org)) > 0, by = time]
 data[miss == TRUE]$weighted_ili_org <- NA
@@ -35,7 +35,7 @@ beta_formulas <- list(weighted_ili_org ~ region + x + y + Har(3,frac = InPeriod)
                         AR(4):region + NB(1) | region + (SIndex + Har(4, frac = InPeriod)):region,
                       weighted_ili_org ~ region + x:region + y:region + Har(3,frac = InPeriod):region +
                         AR(4):region + NB(1):region | region + (SIndex + Har(4, frac = InPeriod)):region
-                      
+
                       )
 
 
@@ -55,7 +55,7 @@ for(i in 1 : length(beta_formulas)){
                             tsiObj = train_data,
                             AM = AM)
   model_n <- Update_mBeta$nobs
-  # convert loglikelihood to proportion scale 
+  # convert loglikelihood to proportion scale
   logLik <- c(logLik, Update_mBeta$loglik)
   npar <- c(npar, dim(Update_mBeta$vcov)[1])
 }
@@ -79,19 +79,19 @@ Model_name <- c(
   "M5: full model"
 )
 comp <- data.frame(Model = Model_name,
-                   LL = logLik, 
+                   LL = logLik,
                    AIC,
-                   AICc, 
-                   BIC, 
+                   AICc,
+                   BIC,
                    npar)
 #comp <- comp[order(npar),]
-# saveRDS(comp, 
+# saveRDS(comp,
 #         file = here::here(paste0("./Theory_results/Forecast_AICc.RData")))
 print(xtable(comp, align = "ll|rrrrr",
-             caption = 'Summaries of model fit. 
+             caption = 'Summaries of model fit.
              Models are ordered by model complexity.
              Ranks are shown in bracket.
-             The loglikelihood (LL) is ranked descending, 
+             The loglikelihood (LL) is ranked descending,
              and the AIC, AICc and BIC are ranked ascending.',
              label = "tab:mBetafit",
              digits = 0),
@@ -115,7 +115,7 @@ print(xtable(comp, align = "ll|rrrrr",
 ## https://github.com/reichlab/article-disease-pred-with-kcde/blob/master/inst/code/prediction/sarima-prediction.R
 
 for(i in 1 : length(beta_formulas)){
-  
+
   ptm <- proc.time()
   beta_formula <- beta_formulas[[i]]
   data_set_results <- data.frame(data_set = data[data$train == FALSE,],
@@ -132,76 +132,76 @@ for(i in 1 : length(beta_formulas)){
                                  vari = rep(NA_real_, num_rows),
                                  stringsAsFactors = FALSE,
                                  row.names = NULL)
-  
+
   class(data_set_results$prediction_time) <- class(data$time)
-  quantile_matrix_name <- data.frame(time = data[data$train == FALSE,]$time, 
+  quantile_matrix_name <- data.frame(time = data[data$train == FALSE,]$time,
                                 region = data[data$train == FALSE,]$region)
   quantile_matrix <- matrix(nrow = nrow(data[data$train == FALSE,]), ncol = 99)
-  
+
   for(time_ind in 1 : length(test_index)) {
     prediction_time_ind <- test_index[time_ind]
     results_row_ind <- which(data_set_results$data_set.time == prediction_time_ind)
     ## Set values describing case in data_set_results
     data_set_results$prediction_time[results_row_ind] <-
       prediction_time_ind
-    
+
     ## Observed value at prediction time -- used in calculating log
     ## score and absolute error
     observed_prediction_target <-
       data[data$time == prediction_time_ind, weighted_ili_org]
-    
+
     newdata <- data[
       time < prediction_time_ind, ]
     newdata <- as_tsibble(newdata, key = region, index = time, regular = TRUE)
-    
+
     Update_mBeta <- fit_mBeta(beta_formula,
                               tsiObj = newdata,
                               AM = AM)
-    
+
     foredata <- as_tsibble( data[
       time == prediction_time_ind, ], index = time, key = region)
-    
-    predict_result <- 
+
+    predict_result <-
       forecast_mBeta(Update_mBeta, foredata, type = "response")
     data_set_results$pt_pred[results_row_ind] <- predict_result
     data_set_results$precision[results_row_ind] <- precision <-
       forecast_mBeta(Update_mBeta, foredata, type = "precision")
-    
+
     data_set_results$shape1[results_row_ind] <- shape1 <- predict_result * precision
     data_set_results$shape2[results_row_ind] <- shape2 <- precision - shape1
-    
+
     ## Compute log score of distribution prediction
-    
+
     data_set_results$log_score[results_row_ind] <-
       dbeta(observed_prediction_target,
             shape1 = shape1,
-            shape2 = shape2, 
-            ncp = 0, 
-            log = TRUE) 
-    
-    
-    
+            shape2 = shape2,
+            ncp = 0,
+            log = TRUE)
+
+
+
     ## Compute absolute error of point prediction
     data_set_results$AE[results_row_ind] <-
       abs(predict_result -
             observed_prediction_target)
-    
-    quantile_matrix[results_row_ind,] <- mapply(qbeta, 
+
+    quantile_matrix[results_row_ind,] <- mapply(qbeta,
                                                 p = (1:99)/100,
                                                 MoreArgs = list(shape1 = shape1,
                                                                 shape2 = shape2,
                                                                 ncp = 0))
-      
-    
-    
+
+
+
     vari <- predict_result * (1 - predict_result)/(1 + precision)
-    data_set_results$DS_score[results_row_ind] <- log(vari) + 
+    data_set_results$DS_score[results_row_ind] <- log(vari) +
       (predict_result - observed_prediction_target)^2/vari
     data_set_results$vari[results_row_ind] <- vari
     print(prediction_time_ind)
-    
+
   } # prediction_time_ind
-  
+
   run_time <- proc.time() - ptm
   npar <- length(Update_mBeta$coefficients$mean) + length(Update_mBeta$coefficients$precision)
   mBeta <- list(result = data_set_results,
@@ -209,11 +209,11 @@ for(i in 1 : length(beta_formulas)){
                 npar = npar,
                 model = beta_formula,
                 quantile_matrix = quantile_matrix)
-  saveRDS(mBeta, 
+  saveRDS(mBeta,
           file = here::here(paste0("./Results/Forecast_mBeta", i,".RData")))
-  
+
 } # beta_formula
 
 
-  
+
 
