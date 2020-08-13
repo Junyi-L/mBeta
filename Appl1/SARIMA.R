@@ -12,7 +12,7 @@ firstnonmiss <- head(which(!missing), 1)
 data <- data[firstnonmiss : dim(data)[1], ]
 data <- data.table(data)
 
-wILi <- logit_FUN(data$weighted_ili)
+wILi <- logit(data$weighted_ili_org)
 wILi <- ts(wILi, frequency = 52)
 
 sarima_fit <-
