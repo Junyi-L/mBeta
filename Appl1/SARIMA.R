@@ -1,29 +1,24 @@
 
-library(xtable)
 library(forecast)
 library(logitnorm)
-library(data.table)
 
+load(file = here::here("Data", "data_holidays.RData"))
 
-load(file = here::here("./Data/data_holidays.RData"))
-
-missing <- is.na(data$weighted_ili)
+missing <- is.na(data$weighted_ili_org)
 firstnonmiss <- head(which(!missing), 1)
-data <- data[firstnonmiss : dim(data)[1], ]
-data <- data.table(data)
+data <- data[firstnonmiss : nrow(data), ]
 
 wILi <- logit(data$weighted_ili_org)
 wILi <- ts(wILi, frequency = 52)
 
 sarima_fit <-
   auto.arima(wILi,trace = TRUE, allowdrift = TRUE, allowmean = TRUE, seasonal = TRUE)
-moment_ARIMA <- function(mu, sigma, option){
-  if (is.na(mu) == 1 | is.na(sigma) == 1) return(NA)
-  if(option == "mean") return(momentsLogitnorm(mu = mu,
-                                               sigma = sigma)[1])
-  
-  return(momentsLogitnorm(mu = mu,
-                          sigma = sigma)[2])
+## Best model: ARIMA(2,0,0)(1,1,0)[52] with drift
+
+
+moment_ARIMA <- function(mu, sigma, option = "mean"){
+  if (is.na(mu) | is.na(sigma)) return(NA_real_)
+  momentsLogitnorm(mu = mu, sigma = sigma)[[option]]
 }
 
 ARIMA_mean <- mapply(moment_ARIMA, mu = sarima_fit$fitted,
@@ -32,15 +27,14 @@ ARIMA_mean <- mapply(moment_ARIMA, mu = sarima_fit$fitted,
 ARIMA_var <-  mapply(moment_ARIMA, mu = sarima_fit$fitted,
                      sigma = sqrt(sarima_fit$sigma2), MoreArgs = list(option = "var"))
 
-ARIMA_resid <- as.numeric((data$weighted_ili_org - ARIMA_mean)/sqrt(ARIMA_var))
-
+ARIMA_resid <- (data$weighted_ili_org - ARIMA_mean) / sqrt(ARIMA_var)
 
 ARIMA_loglik <- mapply(dlogitnorm, data$weighted_ili_org, mu = sarima_fit$fitted,
-                       sigma = sqrt(sarima_fit$sigma2), MoreArgs = list(log = TRUE)) 
+                       sigma = sqrt(sarima_fit$sigma2), MoreArgs = list(log = TRUE))
+
 sarima_fit$loglik_ad <- sum(ARIMA_loglik, na.rm = TRUE)
 sarima_fit$LL <- ARIMA_loglik
 sarima_fit$ARIMA_resid <- ARIMA_resid
-save(sarima_fit, file = here::here("./Results/sarima_fit.RData"))
 
 
-
+save(sarima_fit, file = here::here("Results", "sarima_fit.RData"))
