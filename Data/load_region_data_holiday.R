@@ -7,14 +7,22 @@ data$season <- ifelse(
   paste0(data$year - 1, "/", data$year),
   paste0(data$year, "/", data$year + 1)
 )
-## Season week column: week number within season
+
+## Season week column: week number within season (starts at week 31)
 season_list <- unique(data.frame(season = data$season, time_index = data$time_index))
 data$season_week <- rep(sapply(seq_len(nrow(season_list)), function(row_ind) {
   sum(season_list$season == season_list$season[row_ind] &
         season_list$time_index <= season_list$time_index[row_ind])
 }), each = 10)
-
 data$season_week[data$season == "1997/1998"] <- data$season_week[data$season == "1997/1998"] + 9
+
+## Sebastian's alternative implementation (validation)
+stopifnot(all.equal(data$season_week,
+  ifelse(data$week > 30,
+         data$week - 30L,
+         52 + (MMWRweek::MMWRweek(paste0(data$year,"-01-01"))$MMWRweek == 53) - 30 + data$week)
+))
+
 data$InSeason <- data$week %in% c(1:20, 40:53)
 
 

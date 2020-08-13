@@ -1,4 +1,3 @@
-
 library(data.table)
 
 load(here::here("Data", "usflu.RData"))
@@ -8,16 +7,25 @@ data$season <- ifelse(
   paste0(data$year - 1, "/", data$year),
   paste0(data$year, "/", data$year + 1)
 )
-## Season week column: week number within season
+
+## Season week column: week number within season (starts at week 31)
 data$season_week <- sapply(seq_len(nrow(data)), function(row_ind) {
   sum(data$season == data$season[row_ind] & data$time_index <= data$time_index[row_ind])
 })
-
 data$season_week[data$season == "1997/1998"] <- data$season_week[data$season == "1997/1998"] + 9
+
+## Sebastian's alternative implementation (validation)
+stopifnot(all.equal(data$season_week,
+  ifelse(data$week > 30,
+         data$week - 30L,
+         52 + (MMWRweek::MMWRweek(paste0(data$year,"-01-01"))$MMWRweek == 53) - 30 + data$week)
+))
+
 data$InSeason <- data$week %in% c(1:20, 40:53)
 
 
 data <- as.data.table(data)
+
 #Remove pandemic season 2008/2009 and 2009/2010
 data[season %in% c("2008/2009","2009/2010")]$weighted_ili <- NA
 
