@@ -11,8 +11,8 @@ usflu <- as.data.frame(usflu)
 usflu <- subset(usflu, year <= 2019)  # discard incomplete 19/20 season
 
 data <- usflu[c("region_type", "region", "year", "week", "weighted_ili")]
-# for cdcfluview 0.9.0 missing values are replaced by zeros.
-# replace zeros back to missing values.
+
+## CDC data source has zeros in early off-seasons that are actually missing data
 data[data$weighted_ili == 0,]$weighted_ili <- NA
 
 data <- as.data.table(data)

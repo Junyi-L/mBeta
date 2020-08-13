@@ -28,12 +28,12 @@ MMWRweek2Date <- function(MMWRyear, MMWRweek, MMWRday = NULL) {
   stopifnot(all(is.numeric(MMWRweek)))
   stopifnot(all(0 < MMWRweek & MMWRweek < 54))
   stopifnot(length(MMWRyear) == length(MMWRweek))
-  if (is.null(MMWRday)) 
+  if (is.null(MMWRday))
     MMWRday = rep(1, length(MMWRweek))
   stopifnot(all(0 < MMWRday & MMWRday < 8))
   jan1 = start_date(MMWRyear)
   return(jan1 + (MMWRweek - 1) * 7 + MMWRday - 1)
-  
+
 }
 #-----------------------------------------------------------------------------------
 usflu <- ilinet(region = "hhs", years = 1997:2019)
@@ -46,8 +46,8 @@ data <- transmute(usflu,
                   year = year,
                   week = week,
                   weighted_ili = as.numeric(weighted_ili))
-# for cdcfluview 0.9.0 missing values are replaced by zeros.
-# replace zeros back to missing values.
+
+## CDC data source has zeros in early off-seasons that are actually missing data
 data[data$weighted_ili == 0,]$weighted_ili <- NA
 
 data <- data.table(data)
