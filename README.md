@@ -28,10 +28,10 @@ HIDDA.forecasting 1.1.0, Formula 1.2-3.
     
 * `Appl1/` contains code for application 1.
 
-    * Appl1/Beta.R fits different variants of univariate beta model using national wILI data.
-   
-    * Appl1/SARIMA.R fit SARIMA model using national wILI data.
-   
+    * Appl1/SARIMA.R fit standard SARIMA model (**forecast**`::auto.arima`) using national wILI data with logit transformation.
+
+    * Appl1/Beta.R fits different variants of univariate beta model using national wILI data. This script is `source`d in `Summary1.R` and `acf_plot.R`.
+
     * Appl1/Summary1.R compares the goodness of fit of beta models and SARIMA.
    
     * Appl1/acf_plot.R makes ACF plots of conditional pearson residuals of fitted models.
