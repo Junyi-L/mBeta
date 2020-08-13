@@ -1,5 +1,4 @@
 library(cdcfluview)
-library(lubridate)
 library(data.table)
 library(MMWRweek)
 stopifnot(packageVersion("MMWRweek") >= "0.1.3")
@@ -20,7 +19,7 @@ data[, week_number := max(week), by = year]
 data[, InPeriod := week/week_number, by = year]
 
 data[, time := MMWRweek2Date(MMWRyear = year, MMWRweek = week)]
-data$time_index <- as.integer(data$time -  ymd(paste("1970", "01", "01", sep = "-")))
+data$time_index <- as.integer(data$time)
 
 data <- as.data.frame(data)
 
