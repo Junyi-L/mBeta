@@ -1,3 +1,7 @@
+## Beware that the initial fitting on the training data is relatively fast
+## but the one-step-ahead (rolling) forecasts for all five models
+## take approx. 5+10+3*45 minutes = 2.5 hours
+
 library(tsibble)
 library(betareg)
 library(data.table)
@@ -49,12 +53,14 @@ AICc <- numeric()
 BIC <- numeric()
 logLik <- numeric()
 for(i in 1 : length(beta_formulas)){
+  cat("Fitting model", i, "... ")
   beta_formula <- beta_formulas[[i]]
+  ptm <- proc.time()
   Update_mBeta <- fit_mBeta(beta_formula,
                             tsiObj = train_data,
                             AM = AM)
-  model_n <- Update_mBeta$nobs
-  # convert loglikelihood to proportion scale
+  cat((proc.time() - ptm)[["elapsed"]], "s\n")
+  if (i==1) model_n <- Update_mBeta$nobs else stopifnot(Update_mBeta$nobs == model_n)
   logLik <- c(logLik, Update_mBeta$loglik)
   npar <- c(npar, dim(Update_mBeta$vcov)[1])
 }
@@ -136,6 +142,7 @@ for(i in 1 : length(beta_formulas)){
 
   for(time_ind in 1 : length(test_index)) {
     prediction_time_ind <- test_index[time_ind]
+    cat("M", i, " @ ", format(prediction_time_ind), "\n", sep = "")
     results_row_ind <- which(data_set_results$data_set.time == prediction_time_ind)
     ## Set values describing case in data_set_results
     data_set_results$prediction_time[results_row_ind] <-
@@ -194,7 +201,6 @@ for(i in 1 : length(beta_formulas)){
     data_set_results$DS_score[results_row_ind] <- log(vari) +
       (predict_result - observed_prediction_target)^2/vari
     data_set_results$vari[results_row_ind] <- vari
-    print(prediction_time_ind)
 
   } # prediction_time_ind
 
