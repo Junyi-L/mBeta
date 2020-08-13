@@ -9,6 +9,7 @@ stopifnot(packageVersion("MMWRweek") >= "0.1.3")
 usflu <- ilinet(region = "national", years = 1997:2019)
 # load data date: 03.03.2020
 usflu <- as.data.frame(usflu)
+usflu <- subset(usflu, year <= 2019)  # discard incomplete 19/20 season
 
 data <- transmute(usflu,
                   region_type = region_type,
