@@ -1,6 +1,5 @@
 library(cdcfluview)
 library(lubridate)
-library(dplyr)
 library(MMWRweek)
 stopifnot(packageVersion("MMWRweek") >= "0.1.3")
 ## contains Sebastian's patch for non-English locales
@@ -9,12 +8,7 @@ usflu <- ilinet(region = "hhs", years = 1997:2019)
 # load data date: 03.03.2020
 usflu <- as.data.frame(usflu)
 
-data <- transmute(usflu,
-                  region_type = region_type,
-                  region = region,
-                  year = year,
-                  week = week,
-                  weighted_ili = as.numeric(weighted_ili))
+data <- usflu[c("region_type", "region", "year", "week", "weighted_ili")]
 
 ## CDC data source has zeros in early off-seasons that are actually missing data
 data[data$weighted_ili == 0,]$weighted_ili <- NA
