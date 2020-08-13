@@ -24,18 +24,18 @@ ntest <- num_rows/nkey
 # tsibData is ordered first by region, then by time
 test_index <- tsibData[tsibData$train == FALSE, ][[index_tsi]][1 : ntest]
 
-beta_formulas <- list(weighted_ili_org ~ region + x + y + Har(3,frac = InPeriod) +
-                                AR(4)+ NB(1) | region + (SIndex + Har(4, frac = InPeriod)),
-                      weighted_ili_org ~ region + x + y + Har(3,frac = InPeriod) +
-                                AR(4):region + NB(1) | region + (SIndex + Har(4, frac = InPeriod)),
-                      weighted_ili_org ~ region + x:region + y:region + Har(3,frac = InPeriod):region +
-                        AR(4):region | region + (SIndex + Har(4, frac = InPeriod)):region,
-                      weighted_ili_org ~ region + x:region + y:region + Har(3,frac = InPeriod):region +
-                        AR(4):region + NB(1) | region + (SIndex + Har(4, frac = InPeriod)):region,
-                      weighted_ili_org ~ region + x:region + y:region + Har(3,frac = InPeriod):region +
-                        AR(4):region + NB(1):region | region + (SIndex + Har(4, frac = InPeriod)):region
-
-                      )
+beta_formulas <- list(
+    weighted_ili_org ~ region + x + y + Har(3,frac = InPeriod) +
+        AR(4)+ NB(1) | region + (SIndex + Har(4, frac = InPeriod)),
+    weighted_ili_org ~ region + x + y + Har(3,frac = InPeriod) +
+        AR(4):region + NB(1) | region + (SIndex + Har(4, frac = InPeriod)),
+    weighted_ili_org ~ region + x:region + y:region + Har(3,frac = InPeriod):region +
+        AR(4):region | region + (SIndex + Har(4, frac = InPeriod)):region,
+    weighted_ili_org ~ region + x:region + y:region + Har(3,frac = InPeriod):region +
+        AR(4):region + NB(1) | region + (SIndex + Har(4, frac = InPeriod)):region,
+    weighted_ili_org ~ region + x:region + y:region + Har(3,frac = InPeriod):region +
+        AR(4):region + NB(1):region | region + (SIndex + Har(4, frac = InPeriod)):region
+)
 
 
 
@@ -83,9 +83,7 @@ comp <- data.frame(Model = Model_name,
                    AICc,
                    BIC,
                    npar)
-#comp <- comp[order(npar),]
-# saveRDS(comp,
-#         file = here::here(paste0("./Theory_results/Forecast_AICc.RData")))
+
 print(xtable(comp, align = "ll|rrrrr",
              caption = 'Summaries of model fit.
              Models are ordered by model complexity.
@@ -211,7 +209,3 @@ for(i in 1 : length(beta_formulas)){
           file = here::here(paste0("./Results/Forecast_mBeta", i,".RData")))
 
 } # beta_formula
-
-
-
-
