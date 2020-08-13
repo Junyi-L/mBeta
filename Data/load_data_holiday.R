@@ -65,7 +65,6 @@ data[, y := (season_week == 23)]
 
 data[, weighted_ili_org := weighted_ili/100]
 data[, seasonNr := as.numeric(as.factor(season))]
-data[, prep := seasonNr < 12]
 data[, SIndex := pmin(seasonNr, 13)]
 
 data <- as.data.frame(data)
