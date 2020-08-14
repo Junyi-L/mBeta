@@ -24,26 +24,26 @@ The code consists of two parts
     
 * `Appl1/` contains code for application 1.
 
-    * Appl1/SARIMA.R fit standard SARIMA model ([**forecast**](https://CRAN.R-project.org/package=forecast)`::auto.arima`) using national wILI data with logit transformation.
+    * 'Appl1/SARIMA.R' fits standard SARIMA model ([**forecast**](https://CRAN.R-project.org/package=forecast)`::auto.arima`) using national wILI data with logit transformation.
 
-    * Appl1/Beta.R fits different variants of univariate beta model using national wILI data. This script is `source`d in `Summary1.R` and `acf_plot.R`.
+    * 'Appl1/Beta.R' fits different variants of univariate beta model using national wILI data. This script is `source`d in `Summary1.R` and `acf_plot.R`.
 
-    * Appl1/Summary1.R compares the goodness of fit of beta models and SARIMA.
+    * 'Appl1/Summary1.R' compares the goodness of fit of beta models and SARIMA.
    
-    * Appl1/acf_plot.R makes ACF plots of conditional pearson residuals of fitted models.
+    * 'Appl1/acf_plot.R' makes ACF plots of conditional pearson residuals of fitted models.
    
-    * Appl1/wILI_plots.R makes the time series plots of national wILI data.
+    * 'Appl1/wILI_plots.R' makes the time series plots of national wILI data.
     
 * `Appl2/` contains code for application 2.
 
-    * Appl2/fit_mBeta.R and Appl2/forecast_mBeta.R define functions to fit a mBeta model and forecast from it respectively using [**betareg**](https://CRAN.R-project.org/package=betareg)`::betareg()`.
+    * 'Appl2/fit_mBeta.R' and 'Appl2/forecast_mBeta.R' define functions to fit a mBeta model and forecast from it respectively using [**betareg**](https://CRAN.R-project.org/package=betareg)`::betareg()`.
     
-    * Appl2/forecast_script.R make one-step-ahead forecast from mBeta models.
+    * 'Appl2/forecast_script.R' makes one-step-ahead forecast from mBeta models.
     
-    * Appl2/fan_plots.R makes fan plots from forecasts of Model M4.
+    * 'Appl2/fan_plots.R' makes fan plots from forecasts of Model M4.
     
-    * Appl2/coef_plot.R makes confidence interval plots of fitted full mBeta model.
+    * 'Appl2/coef_plot.R' makes confidence interval plots of fitted full mBeta model.
     
-    * Appl2/mBeta_summary.R compares forecast performance of mBeta models.
+    * 'Appl2/mBeta_summary.R' compares forecast performance of mBeta models.
     
 * `Results/` have been produced in R 3.6.2 using betareg 3.1-3 and forecast 8.12.
