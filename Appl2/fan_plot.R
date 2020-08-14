@@ -1,6 +1,6 @@
 # ################# fanplots
 library(data.table)
-result4 <- readRDS(file = here::here("./Results/Forecast_mBeta4.RData"))
+result4 <- readRDS(file = here::here("./Results/Forecast_mBeta4.rds"))
 load(file = here::here("./Data/Region_data_holidays.RData"))
 # General setting
 library("surveillance")

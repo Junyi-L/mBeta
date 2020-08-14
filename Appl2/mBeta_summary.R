@@ -1,9 +1,9 @@
 library(data.table)
-result1 <- readRDS(file = here::here("./Results/Forecast_mBeta1.RData"))
-result2 <- readRDS(file = here::here("./Results/Forecast_mBeta2.RData"))
-result3 <- readRDS(file = here::here("./Results/Forecast_mBeta3.RData"))
-result4 <- readRDS(file = here::here("./Results/Forecast_mBeta4.RData"))
-result5 <- readRDS(file = here::here("./Results/Forecast_mBeta5.RData"))
+result1 <- readRDS(file = here::here("./Results/Forecast_mBeta1.rds"))
+result2 <- readRDS(file = here::here("./Results/Forecast_mBeta2.rds"))
+result3 <- readRDS(file = here::here("./Results/Forecast_mBeta3.rds"))
+result4 <- readRDS(file = here::here("./Results/Forecast_mBeta4.rds"))
+result5 <- readRDS(file = here::here("./Results/Forecast_mBeta5.rds"))
 
 result_list_old <- list(result1,
                         result2,

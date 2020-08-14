@@ -212,6 +212,6 @@ for(i in 1 : length(beta_formulas)){
                 model = beta_formula,
                 quantile_matrix = quantile_matrix)
   saveRDS(mBeta,
-          file = here::here(paste0("./Results/Forecast_mBeta", i,".RData")))
+          file = here::here(paste0("./Results/Forecast_mBeta", i,".rds")))
 
 } # beta_formula
