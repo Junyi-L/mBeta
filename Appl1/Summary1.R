@@ -10,7 +10,7 @@ model_type <-
     "b: no trend in $\\phi_t$",
     "c: $\\phi_t = \\phi$",
     "d: $\\beta_k = 0$",
-    "e: $g(x_{t-k}) = x_{t-k}$",
+    "e: $g(X_{t-k}) = X_{t-k}$",
     "SARIMA")
 # a: whole model
 # b: constant precision
