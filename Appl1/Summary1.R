@@ -6,12 +6,12 @@ load(file = here::here("./Results/sarima_fit.RData"))
 
 model_name <- c(rep("Beta", 5), "SARIMA")
 model_type <-
-  c("a: full model",
-    "b: no trend in $\\phi_t$",
-    "c: $\\phi_t = \\phi$",
-    "d: $\\beta_k = 0$",
-    "e: $g(X_{t-k}) = X_{t-k}$",
-    "SARIMA")
+  c("(a) full model",
+    "(b) no trend in $\\phi_t$",
+    "(c) $\\phi_t = \\phi$",
+    "(d) $\\beta_k = 0$",
+    "(e) $g(X_{t-k}) = X_{t-k}$",
+    sub("^ARIMA([^ ]+).*$", "\\1", forecast:::arima.string(sarima_fit)))
 # a: whole model
 # b: constant precision
 # c: no lag
