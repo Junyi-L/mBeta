@@ -62,9 +62,10 @@ colnames(summary_table) <- c("Model", "Variant", "LL", "npar", "AIC","AICc","BIC
 library(xtable)
 print(xtable(summary_table, align = "ccl|rrrrr",
              caption = 'Summaries of model fit.
-             Ranks are shown in bracket.
-             The loglikelihood (LL) is ranked descending,
-             and the AIC, AICc and BIC are ranked ascending.',
+             Ranks are shown in parantheses.
+             The log-likelihood (LL) is ranked descending,
+             and AIC, AICc, BIC are ranked ascending.
+             The \"npar\" column gives the number of estimated parameters.',
              label = "tab:wILIsum",
              digits = 0),
       type = "latex",
