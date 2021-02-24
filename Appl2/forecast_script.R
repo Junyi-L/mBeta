@@ -92,10 +92,10 @@ comp <- data.frame(Model = Model_name,
 
 print(xtable(comp, align = "ll|rrrrr",
              caption = 'Summaries of model fit.
-             Models are ordered by model complexity.
-             Ranks are shown in bracket.
-             The loglikelihood (LL) is ranked descending,
-             and the AIC, AICc and BIC are ranked ascending.',
+             Models are ordered by complexity (number of estimated parameters, \"npar\").
+             Ranks are shown in parantheses.
+             The log-likelihood (LL) is ranked descending,
+             and AIC, AICc, BIC are ranked ascending.',
              label = "tab:mBetafit",
              digits = 0),
       type = "latex",
