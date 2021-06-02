@@ -34,8 +34,8 @@ pll <- function(logd, OMat, beta_formula, train_data){
   d <- exp(logd)
   neW <- zetaweights(OMat, d, maxlag = max(OMat), normalize = TRUE)
   Beta_fit <- fit_mBeta(beta_formula,
-            tsiObj = train_data,
-            AM = neW)
+                        tsiObj = train_data,
+                        AM = neW)
   ll <- -logLik(Beta_fit)
   return(ll)
 }
@@ -84,21 +84,28 @@ for(i in 1 : length(beta_formulas)){
   cat("Fitting model", i, "... ")
   beta_formula <- beta_formulas[[i]]
   ptm <- proc.time()
-  optim_beta <- optim(par = 0.6, fn = pll, method = "BFGS", OMat = OMat, 
-                      beta_formula = beta_formula,
-                       train_data = train_data, hessian = TRUE)
-  hessian[[i]] <- optim_beta$hessian
-  conv[i] <- optim_beta$convergence
-  di <- exp(optim_beta$par)
-  d[i] <- di
-  AM <- zetaweights(OMat, di, maxlag = max(OMat), normalize = TRUE)
-  Update_mBeta <- fit_mBeta(beta_formula,
-                            tsiObj = train_data,
-                            AM = AM)
+  if (i == 3){
+    # model 3 does not contain neighborhood part
+    Update_mBeta <- fit_mBeta(beta_formula,
+                              tsiObj = train_data)
+    npar <- c(npar, dim(Update_mBeta$vcov)[1])
+  }else{
+    optim_beta <- optim(par = -0.69, fn = pll, method = "BFGS", OMat = OMat, 
+                        beta_formula = beta_formula,
+                        train_data = train_data, hessian = TRUE)
+    hessian[[i]] <- optim_beta$hessian
+    conv[i] <- optim_beta$convergence
+    di <- exp(optim_beta$par)
+    d[i] <- di
+    AM <- zetaweights(OMat, di, maxlag = max(OMat), normalize = TRUE)
+    Update_mBeta <- fit_mBeta(beta_formula,
+                              tsiObj = train_data,
+                              AM = AM)
+    npar <- c(npar, dim(Update_mBeta$vcov)[1] + 1)
+    }
   cat((proc.time() - ptm)[["elapsed"]], "s\n")
   if (i==1) model_n <- Update_mBeta$nobs else stopifnot(Update_mBeta$nobs == model_n)
   logLik <- c(logLik, Update_mBeta$loglik)
-  npar <- c(npar, dim(Update_mBeta$vcov)[1] + 1)
 }
 
 
