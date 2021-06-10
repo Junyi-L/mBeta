@@ -77,6 +77,7 @@ fit_mBeta <- function(formula, tsiObj, AM = NULL){
 
     AM <- parent.frame(5)$AM
     if(is.null(AM)) stop("The adjacent matrix must be provided for neighborhood effect!")
+    AM <- AM/rowSums(AM) # row normalizarion
     response <- all.vars(parent.frame(5)$formula)[1]
     # check AM having the same name with key, reorder.
     keys <- key_data(data)
@@ -89,8 +90,8 @@ fit_mBeta <- function(formula, tsiObj, AM = NULL){
       pname <- paste0("p", i)
       # lagged observations
       data[, paste0("p", i)  := qlogis(shift(get(response),n = i, type = "lag")), by = key_tsi]
-      # lagged neighbor observations, averaged by the number of neighbors.
-      data[, paste0("NB", i) := drop(crossprod(get(pname), AM))/colSums(AM), by = index_tsi]
+      # lagged neighbor observations
+      data[, paste0("NB", i) := drop(crossprod(get(pname), AM)), by = index_tsi]
     }
     NB_matrix <- as.matrix(data[, ..NB_name])
     return(NB_matrix)
