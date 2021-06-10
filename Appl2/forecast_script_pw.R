@@ -35,7 +35,7 @@ OMat <- nbOrder(AM, maxlag = 10)
 # negative profile log-likelihood
 pll <- function(logd, OMat, beta_formula, train_data){
   d <- exp(logd)
-  neW <- zetaweights(OMat, d, normalize = TRUE)
+  neW <- zetaweights(OMat, d)
   Beta_fit <- fit_mBeta(beta_formula,
                         tsiObj = train_data,
                         AM = neW)
@@ -87,7 +87,7 @@ for(i in 1 : length(beta_formulas)){
     conv[i] <- optim_beta$convergence
     di <- exp(optim_beta$par)
     d[i] <- di
-    AM <- zetaweights(OMat, di, maxlag = max(OMat), normalize = TRUE)
+    AM <- zetaweights(OMat, di)
     Update_mBeta <- fit_mBeta(beta_formula,
                               tsiObj = train_data,
                               AM = AM)
