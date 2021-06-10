@@ -1,3 +1,6 @@
+## Beware that the initial fitting on the training data is relatively fast
+## but the one-step-ahead (rolling) forecasts for all five models take hours
+
 # prepare data
 library(tsibble)
 library(betareg)
@@ -29,32 +32,18 @@ train_data <- as_tsibble(train_data, key = region, index = time, regular = TRUE)
 
 # order matrix
 OMat <- nbOrder(AM, maxlag = 10)
-# profil likelihood
+# negative profile log-likelihood
 pll <- function(logd, OMat, beta_formula, train_data){
   d <- exp(logd)
-  neW <- zetaweights(OMat, d, maxlag = max(OMat), normalize = TRUE)
+  neW <- zetaweights(OMat, d, normalize = TRUE)
   Beta_fit <- fit_mBeta(beta_formula,
                         tsiObj = train_data,
                         AM = neW)
-  ll <- -logLik(Beta_fit)
-  return(ll)
+  negll <- -logLik(Beta_fit)
+  return(negll)
 }
 
-# optim_beta1 <- optim(par = 1, pll, method = "BFGS", OMat = OMat, beta_formula = beta_formula,
-#       train_data = train_data)
-# 
-# beta_formula <- weighted_ili_org ~ region + x:region + y:region + Har(3,frac = InPeriod):region +
-#   AR(4):region + NB(1):region | region + (SIndex + Har(4, frac = InPeriod)):region
-# 
-# optim_beta5 <- optim(par = 1, pll, method = "BFGS", OMat = OMat, beta_formula = beta_formula,
-#                      train_data = train_data)
-
-
-## Beware that the initial fitting on the training data is relatively fast
-## but the one-step-ahead (rolling) forecasts for all five models
-## take approx. 5+10+3*45 minutes = 2.5 hours
-
-
+# model formulations
 beta_formulas <- list(
   weighted_ili_org ~ region + x + y + Har(3,frac = InPeriod) +
     AR(4)+ NB(1) | region + (SIndex + Har(4, frac = InPeriod)),
@@ -90,9 +79,10 @@ for(i in 1 : length(beta_formulas)){
                               tsiObj = train_data)
     npar <- c(npar, dim(Update_mBeta$vcov)[1])
   }else{
-    optim_beta <- optim(par = -0.69, fn = pll, method = "BFGS", OMat = OMat, 
+    optim_beta <- optim(par = -0.69, fn = pll, method = "BFGS", OMat = OMat,
                         beta_formula = beta_formula,
-                        train_data = train_data, hessian = TRUE)
+                        train_data = train_data,
+                        control = list(trace = 1, REPORT = 1), hessian = TRUE)
     hessian[[i]] <- optim_beta$hessian
     conv[i] <- optim_beta$convergence
     di <- exp(optim_beta$par)
