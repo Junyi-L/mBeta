@@ -119,8 +119,8 @@ comp <- data.frame(Model = Model_name,
                    AICc,
                    BIC,
                   npar)
-
-save(list(comp, d, covn, hessian), file = here::here("./Results/mBeta_fit_PW.RData"))
+result <- list(comp, d, conv, hessian, fit)
+save(result, file = here::here("./Results/mBeta_fit_PW.RData"))
 
 printformat1 <- function(x) {
   paste0(formatC(round(x, digits = 0), format='f', digits=0 ), " (",rank(-x), ")")
@@ -149,5 +149,117 @@ print(xtable(comp, align = "ll|rrrrr",
       comment = FALSE)
 #----------------------------------------
 #
+#-------------------------------------------------------
+# One-step-ahead forecast
+
+## the design is based on the "ili_national" example in
+## https://github.com/reichlab/article-disease-pred-with-kcde/blob/master/inst/code/prediction/sarima-prediction.R
+
+for(i in 1 : length(beta_formulas)){
+  
+  ptm <- proc.time()
+  beta_formula <- beta_formulas[[i]]
+  data_set_results <- data.frame(data_set = data[data$train == FALSE,],
+                                 model = paste0("mBeta"),
+                                 prediction_horizon = 1,
+                                 prediction_time = rep(NA, num_rows),
+                                 log_score = rep(NA_real_, num_rows),
+                                 pt_pred = rep(NA_real_, num_rows),
+                                 AE = rep(NA_real_, num_rows),
+                                 precision = rep(NA_real_, num_rows),
+                                 shape1 = rep(NA_real_, num_rows),
+                                 shape2 = rep(NA_real_, num_rows),
+                                 DS_score = rep(NA_real_, num_rows),
+                                 vari = rep(NA_real_, num_rows),
+                                 stringsAsFactors = FALSE,
+                                 row.names = NULL)
+  
+  class(data_set_results$prediction_time) <- class(data$time)
+  quantile_matrix_name <- data.frame(time = data[data$train == FALSE,]$time,
+                                     region = data[data$train == FALSE,]$region)
+  quantile_matrix <- matrix(nrow = nrow(data[data$train == FALSE,]), ncol = 99)
+  # fix decay parameter during forecast
+  # model 3 doesn't contain neighborhood effect
+  if(i != 3){
+    di <- d[i]
+    AM <- zetaweights(OMat, di)
+  }else AM <- NULL 
+  
+  for(time_ind in 1 : length(test_index)) {
+    prediction_time_ind <- test_index[time_ind]
+    cat("M", i, " @ ", format(prediction_time_ind), "\n", sep = "")
+    results_row_ind <- which(data_set_results$data_set.time == prediction_time_ind)
+    ## Set values describing case in data_set_results
+    data_set_results$prediction_time[results_row_ind] <-
+      prediction_time_ind
+    
+    ## Observed value at prediction time -- used in calculating log
+    ## score and absolute error
+    observed_prediction_target <-
+      data[data$time == prediction_time_ind, weighted_ili_org]
+    
+    newdata <- data[
+      time < prediction_time_ind, ]
+    newdata <- as_tsibble(newdata, key = region, index = time, regular = TRUE)
+    
+    Update_mBeta <- fit_mBeta(beta_formula,
+                              tsiObj = newdata,
+                              AM = AM)
+    
+    foredata <- as_tsibble( data[
+      time == prediction_time_ind, ], index = time, key = region)
+    
+    predict_result <-
+      forecast_mBeta(Update_mBeta, foredata, type = "response")
+    data_set_results$pt_pred[results_row_ind] <- predict_result
+    data_set_results$precision[results_row_ind] <- precision <-
+      forecast_mBeta(Update_mBeta, foredata, type = "precision")
+    
+    data_set_results$shape1[results_row_ind] <- shape1 <- predict_result * precision
+    data_set_results$shape2[results_row_ind] <- shape2 <- precision - shape1
+    
+    ## Compute log score of distribution prediction
+    
+    data_set_results$log_score[results_row_ind] <-
+      dbeta(observed_prediction_target,
+            shape1 = shape1,
+            shape2 = shape2,
+            ncp = 0,
+            log = TRUE)
+    
+    
+    
+    ## Compute absolute error of point prediction
+    data_set_results$AE[results_row_ind] <-
+      abs(predict_result -
+            observed_prediction_target)
+    
+    quantile_matrix[results_row_ind,] <- mapply(qbeta,
+                                                p = (1:99)/100,
+                                                MoreArgs = list(shape1 = shape1,
+                                                                shape2 = shape2,
+                                                                ncp = 0))
+    
+    
+    
+    vari <- predict_result * (1 - predict_result)/(1 + precision)
+    data_set_results$DS_score[results_row_ind] <- log(vari) +
+      (predict_result - observed_prediction_target)^2/vari
+    data_set_results$vari[results_row_ind] <- vari
+    
+  } # prediction_time_ind
+  
+  run_time <- proc.time() - ptm
+  npar <- length(Update_mBeta$coefficients$mean) + length(Update_mBeta$coefficients$precision)
+  mBeta <- list(result = data_set_results,
+                run_time = run_time,
+                npar = npar,
+                model = beta_formula,
+                quantile_matrix = quantile_matrix)
+  saveRDS(mBeta,
+          file = here::here(paste0("./Results/Forecast_mBeta_pw_", i,".rds")))
+  
+} # beta_formula
+
 
 

@@ -1,0 +1,22 @@
+\begin{table}[ht]
+\centering
+\begingroup\fontsize{9pt}{10pt}\selectfont
+\begin{tabular}{l|rrrrr}
+  \hline
+Model & logLik & AIC & AICc & BIC & npar \\ 
+  \hline
+M1: $\beta_{r,k} = \beta_{k}$, $\beta_{r}^{(\nu)} = \beta^{(\nu)}$, $\beta_{r}^{(\phi)} = \beta^{(\phi)}$, $\gamma_r = \gamma$ & 26119 (5) & -52152 (5) & -52151 (5) & -51864 (1) & 43 \\ 
+  M2: $\beta_{r}^{(\nu)} = \beta^{(\nu)}$, $\beta^{(\phi)} = \beta^{(\phi)}$, $\gamma_r = \gamma$ & 26212 (4) & -52266 (4) & -52264 (4) & -51738 (2) & 79 \\ 
+  M3: $\gamma_r = 0$ & 26459 (3) & -52458 (3) & -52440 (3) & -50919 (5) & 230 \\ 
+  M4: $\gamma_r = \gamma$ & 26485 (2) & -52505 (2) & -52487 (2) & -50953 (3) & 232 \\ 
+  M5: full model & 26508 (1) & -52533 (1) & -52513 (1) & -50921 (4) & 241 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\caption{Summaries of model fit.
+             Models are ordered by complexity (number of estimated parameters, "npar").
+             Ranks are shown in parantheses.
+             The log-likelihood (LL) is ranked descending,
+             and AIC, AICc, BIC are ranked ascending.} 
+\label{tab:mBetafit}
+\end{table}
