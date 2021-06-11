@@ -67,8 +67,9 @@ AICc <- numeric()
 BIC <- numeric()
 logLik <- numeric()
 d <- numeric()
-hessian <- list()
+hessian <- numeric()
 conv <- numeric()
+fit <- list()
 for(i in 1 : length(beta_formulas)){
   cat("Fitting model", i, "... ")
   beta_formula <- beta_formulas[[i]]
@@ -78,12 +79,13 @@ for(i in 1 : length(beta_formulas)){
     Update_mBeta <- fit_mBeta(beta_formula,
                               tsiObj = train_data)
     npar <- c(npar, dim(Update_mBeta$vcov)[1])
+    fit[[i]] <- Update_mBeta
   }else{
     optim_beta <- optim(par = -0.69, fn = pll, method = "BFGS", OMat = OMat,
                         beta_formula = beta_formula,
                         train_data = train_data,
                         control = list(trace = 1, REPORT = 1), hessian = TRUE)
-    hessian[[i]] <- optim_beta$hessian
+    hessian[i] <- unlist(optim_beta$hessian)
     conv[i] <- optim_beta$convergence
     di <- exp(optim_beta$par)
     d[i] <- di
@@ -91,6 +93,7 @@ for(i in 1 : length(beta_formulas)){
     Update_mBeta <- fit_mBeta(beta_formula,
                               tsiObj = train_data,
                               AM = AM)
+    fit[[i]] <- Update_mBeta
     npar <- c(npar, dim(Update_mBeta$vcov)[1] + 1)
     }
   cat((proc.time() - ptm)[["elapsed"]], "s\n")
@@ -115,9 +118,9 @@ comp <- data.frame(Model = Model_name,
                    AIC,
                    AICc,
                    BIC,
-                   npar)
+                  npar)
 
-save(comp, file = here::here("./Results/mBeta_fit_PW.RData"))
+save(list(comp, d, covn, hessian), file = here::here("./Results/mBeta_fit_PW.RData"))
 
 printformat1 <- function(x) {
   paste0(formatC(round(x, digits = 0), format='f', digits=0 ), " (",rank(-x), ")")
