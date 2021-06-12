@@ -119,8 +119,8 @@ comp <- data.frame(Model = Model_name,
                    AICc,
                    BIC,
                   npar)
-result <- list(comp, d, conv, hessian, fit)
-save(result, file = here::here("./Results/mBeta_fit_PW.RData"))
+save(list = c("comp", "d", "hessian", "fit"), 
+     file = here::here("./Results/mBeta_fit_PW.RData"))
 
 printformat1 <- function(x) {
   paste0(formatC(round(x, digits = 0), format='f', digits=0 ), " (",rank(-x), ")")

@@ -3,16 +3,9 @@ library(betareg)
 library(data.table)
 library(tidyselect)
 library(Formula)
-source(file = here::here("./Appl2/fit_mBeta.R"))
-source(file = here::here("./Appl2/forecast_mBeta.R"))
-load(file = here::here("./Data/adj_matrix.RData"))
+load(file = here::here("./Results/mBeta_fit_PW.RData"))
 
-load(file = here::here("./Data/Region_data_holidays.RData"))
-tsibData <- as_tsibble(data, key = region, index = time, regular = TRUE)
-mBeta <- fit_mBeta(weighted_ili_org ~ region * (x + y + Har(3,frac = InPeriod) + AR(4) + NB(1))|
-                     region * (Har(4, frac = InPeriod)  + SIndex),
-                   tsiObj = as_tsibble(tsibData[tsibData$train,], index = time, key = region),
-                   AM = AM)
+mBeta <- fit[[5]]
 #covariance matrix of estimated parameters.
 vcov <- vcov(mBeta)
 #x <- vcov[grepl("NB",rownames(vcov)),grepl("NB",rownames(vcov))]

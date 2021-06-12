@@ -115,45 +115,45 @@ RNGversion("3.6.2")
 set.seed(20200812)
 
 library(surveillance)
-Per_43 <- permutationTest(result_table$LS[result_table$Model == "M4"],
-                          result_table$LS[result_table$Model == "M3"],
-                          nPermutation = 9999)
-Per_41 <- permutationTest(result_table$LS[result_table$Model == "M4"],
+Per_51 <- permutationTest(result_table$LS[result_table$Model == "M5"],
                           result_table$LS[result_table$Model == "M1"],
                           nPermutation = 9999)
-Per_42 <- permutationTest(result_table$LS[result_table$Model == "M4"],
+Per_52 <- permutationTest(result_table$LS[result_table$Model == "M5"],
                           result_table$LS[result_table$Model == "M2"],
                           nPermutation = 9999)
-Per_45 <- permutationTest(result_table$LS[result_table$Model == "M2"],
-                          result_table$LS[result_table$Model == "M5"],
+Per_53 <- permutationTest(result_table$LS[result_table$Model == "M5"],
+                          result_table$LS[result_table$Model == "M3"],
+                          nPermutation = 9999)
+Per_54 <- permutationTest(result_table$LS[result_table$Model == "M5"],
+                          result_table$LS[result_table$Model == "M4"],
                           nPermutation = 9999)
 
-Per_43_sub <- permutationTest(result_table$LS[result_table$Model == "M4" & result_table$Inseason == TRUE],
-                              result_table$LS[result_table$Model == "M3" & result_table$Inseason == TRUE],
-                              nPermutation = 9999)
-Per_41_sub <- permutationTest(result_table$LS[result_table$Model == "M4" & result_table$Inseason == TRUE],
+Per_51_sub <- permutationTest(result_table$LS[result_table$Model == "M5" & result_table$Inseason == TRUE],
                               result_table$LS[result_table$Model == "M1" & result_table$Inseason == TRUE],
                               nPermutation = 9999)
-Per_45_sub <- permutationTest(result_table$LS[result_table$Model == "M4" & result_table$Inseason == TRUE],
-                              result_table$LS[result_table$Model == "M5" & result_table$Inseason == TRUE],
+Per_52_sub <- permutationTest(result_table$LS[result_table$Model == "M5" & result_table$Inseason == TRUE],
+                              result_table$LS[result_table$Model == "M2" & result_table$Inseason == TRUE],
                               nPermutation = 9999)
-Per_42_sub <- permutationTest(result_table$LS[result_table$Model == "M2" & result_table$Inseason == TRUE],
+Per_53_sub <- permutationTest(result_table$LS[result_table$Model == "M5" & result_table$Inseason == TRUE],
+                              result_table$LS[result_table$Model == "M3" & result_table$Inseason == TRUE],
+                              nPermutation = 9999)
+Per_54_sub <- permutationTest(result_table$LS[result_table$Model == "M5" & result_table$Inseason == TRUE],
                               result_table$LS[result_table$Model == "M4" & result_table$Inseason == TRUE],
                               nPermutation = 9999)
 
 
-Per_list <- as.numeric(c(Per_41$pVal.permut,
-                         Per_42$pVal.permut,
-                         Per_43$pVal.permut,
-                         NA,
-                         Per_45$pVal.permut
+Per_list <- as.numeric(c(Per_51$pVal.permut,
+                         Per_52$pVal.permut,
+                         Per_53$pVal.permut,
+                         Per_54$pVal.permut,
+                         NA
 ))
 
-Per_list2 <- as.numeric(c(Per_41_sub$pVal.permut,
-                          Per_42_sub$pVal.permut,
-                          Per_43_sub$pVal.permut,
-                          NA,
-                          Per_45_sub$pVal.permut
+Per_list2 <- as.numeric(c(Per_51_sub$pVal.permut,
+                          Per_52_sub$pVal.permut,
+                          Per_53_sub$pVal.permut,
+                          Per_54_sub$pVal.permut,
+                          NA
 ))
 sum_table2$pvalue <- Per_list
 sum_table2_sub$pvalue <- Per_list2
