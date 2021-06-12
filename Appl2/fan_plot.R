@@ -1,6 +1,6 @@
 # ################# fanplots
 library(data.table)
-result4 <- readRDS(file = here::here("./Results/Forecast_mBeta4.rds"))
+result5 <- readRDS(file = here::here("./Results/Forecast_mBeta_pw_5.rds"))
 load(file = here::here("./Data/Region_data_holidays.RData"))
 # General setting
 library("surveillance")
@@ -12,23 +12,23 @@ height <- 2
 
 library(data.table)
 # prepare for PIT
-data <- as.data.table(result4$result)
+data <- as.data.table(result5$result)
 data[, PIT := pbeta(q = data_set.weighted_ili_org,
                     shape1 = shape1,
                     shape2 = shape2)]
 
 for(r in 1:10){
   # Fan plot for region r
-  quantilesm <- result4$quantile_matrix[result4$result$data_set.region ==
+  quantilesm <- result5$quantile_matrix[result5$result$data_set.region ==
                                           paste("Region",r),]
   quantilesm <- as.matrix(quantilesm)
-  ym <- result4$result$data_set.weighted_ili_org[result4$result$data_set.region ==
+  ym <- result5$result$data_set.weighted_ili_org[result5$result$data_set.region ==
                                                    paste("Region",r)]
-  LSm <- -result4$result$log_score[result4$result$data_set.region ==
+  LSm <- -result5$result$log_score[result5$result$data_set.region ==
                                      paste("Region",r)]
-  DSSm <- result4$result$DS_score[result4$result$data_set.region ==
+  DSSm <- result5$result$DS_score[result5$result$data_set.region ==
                                     paste("Region",r)]
-  meanm <- result4$result$pt_pred[result4$result$data_set.region ==
+  meanm <- result5$result$pt_pred[result5$result$data_set.region ==
                                     paste("Region",r)]
   upper_ylim <- max(quantilesm)
   ylimi <- c(0, upper_ylim)
@@ -37,7 +37,7 @@ for(r in 1:10){
   probs <- (1:99)/100
 
   wILI.sts <- sts(observed = ym,
-                  epoch = result4$result$data_set.time[result4$result$data_set.region ==
+                  epoch = result5$result$data_set.time[result5$result$data_set.region ==
                                                          paste("Region",r)],
                   epochAsDate = TRUE)
 
@@ -177,3 +177,4 @@ p1 <- ggplot(data = data[data$region %in% paste("Region", 6:10),],
 p1 + facet_grid(rows = vars(region),  scales="free_x" , as.table=TRUE) + xlab("Year") +
   ylab("wILI (%)")
 dev.off()
+

@@ -68,12 +68,12 @@ sum_table_sub <- setDT(result_table_avgR)[Inseason == TRUE ,
                                           by = .(season, Model)]
 
 setkey(sum_table_sub, season)
-
-library(ggplot2)
-pdf(file = here::here("./Plots/mBeta_LS.pdf"), height = 6, width = 8)
-ggplot(data = sum_table_sub, aes(x = season, y = LS, color = Model)) +
-  geom_point(aes(shape = Model), size = 3)
-dev.off()
+# 
+# library(ggplot2)
+# pdf(file = here::here("./Plots/mBeta_LS.pdf"), height = 6, width = 8)
+# ggplot(data = sum_table_sub, aes(x = season, y = LS, color = Model)) +
+#   geom_point(aes(shape = Model), size = 3)
+# dev.off()
 
 sum_table2 <- setDT(sum_table)[, list(LS = mean(LS),
                                       maxLS = max(LS),
@@ -159,11 +159,11 @@ sum_table2$pvalue <- Per_list
 sum_table2_sub$pvalue <- Per_list2
 
 Model_name <- c(
-  "M1: $\\beta_{r,k} = \\beta_{k}$, $\\beta_{r}^{(\\nu)} = \\beta^{(\\nu)}$, $\\beta^{(\\phi)} = \\beta^{(\\phi)}$, $\\gamma_r = \\gamma$",
-  "M2: $\\beta_{r}^{(\\nu)} = \\beta^{(\\nu)}$, $\\beta^{(\\phi)} = \\beta^{(\\phi)}$, $\\gamma_r = \\gamma$",
-  "M3: $\\gamma_r = 0$",
-  "M4: $\\gamma_r = \\gamma$",
-  "M5: full model"
+  "S1: $\\beta_{r,k} = \\beta_{k}$, $\\beta_{r}^{(\\nu)} = \\beta^{(\\nu)}$, $\\beta^{(\\phi)} = \\beta^{(\\phi)}$, $\\gamma_r = \\gamma$",
+  "S2: $\\beta_{r}^{(\\nu)} = \\beta^{(\\nu)}$, $\\beta^{(\\phi)} = \\beta^{(\\phi)}$, $\\gamma_r = \\gamma$",
+  "S3: $\\gamma_r = 0$",
+  "S4: $\\gamma_r = \\gamma$",
+  "S5: full model"
 )
 sum_table2$Model <- Model_name
 sum_table2_sub$Model <- Model_name
