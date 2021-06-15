@@ -122,6 +122,12 @@ comp <- data.frame(Model = Model_name,
 save(list = c("comp", "d", "hessian", "fit"), 
      file = here::here("./Results/mBeta_fit_PW.RData"))
 
+d5 <- log(d[5])
+h5 <- sqrt(hessian[5])
+CIupper <- exp(d5 + 1.96 * 1/h5)
+CIlower <- exp(d5 - 1.96 * 1/h5)
+
+
 printformat1 <- function(x) {
   paste0(formatC(round(x, digits = 0), format='f', digits=0 ), " (",rank(-x), ")")
 }

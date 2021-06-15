@@ -192,7 +192,7 @@ print(xtable(sum_table2, align = "lll|rrrr",
              Models are ordered by model complexity.
              The Monte Carlo p-values for differences in mean log scores
              are based on 9999 random permutations,
-             comparing each model against the best model in each subset.',
+             comparing each model against the best model (M5) in each subset.',
              label = "tab:forecast",
              digits = 2),
       type = "latex",
