@@ -91,24 +91,24 @@ by = Model]
 
 
 sum_table2[, LS :=
-             paste0(formatC(round(LS, digits = 2), format='f', digits=2 ), "(",rank(LS), ")")]
+             paste0(formatC(round(LS, digits = 2), format='f', digits=2 ), " (",rank(LS), ")")]
 sum_table2_sub[, LS :=
-                 paste0(formatC(round(LS, digits = 2), format='f', digits=2 ), "(",rank(LS), ")")]
+                 paste0(formatC(round(LS, digits = 2), format='f', digits=2 ), " (",rank(LS), ")")]
 
 sum_table2[, maxLS :=
-             paste0(formatC(round(maxLS, digits = 2), format='f', digits=2 ), "(",rank(maxLS), ")")]
+             paste0(formatC(round(maxLS, digits = 2), format='f', digits=2 ), " (",rank(maxLS), ")")]
 sum_table2_sub[, maxLS :=
-                 paste0(formatC(round(maxLS, digits = 2), format='f', digits=2 ), "(",rank(maxLS), ")")]
+                 paste0(formatC(round(maxLS, digits = 2), format='f', digits=2 ), " (",rank(maxLS), ")")]
 
 sum_table2[, DSS :=
-             paste0(formatC(round(DSS, digits = 2), format='f', digits=2 ), "(",rank(DSS), ")")]
+             paste0(formatC(round(DSS, digits = 2), format='f', digits=2 ), " (",rank(DSS), ")")]
 sum_table2_sub[, DSS :=
-                 paste0(formatC(round(DSS, digits = 2), format='f', digits=2 ), "(",rank(DSS), ")")]
+                 paste0(formatC(round(DSS, digits = 2), format='f', digits=2 ), " (",rank(DSS), ")")]
 
 sum_table2[, maxDSS :=
-             paste0(formatC(round(maxDSS, digits = 2), format='f', digits=2 ), "(",rank(maxDSS), ")")]
+             paste0(formatC(round(maxDSS, digits = 2), format='f', digits=2 ), " (",rank(maxDSS), ")")]
 sum_table2_sub[, maxDSS :=
-                 paste0(formatC(round(maxDSS, digits = 2), format='f', digits=2 ), "(",rank(maxDSS), ")")]
+                 paste0(formatC(round(maxDSS, digits = 2), format='f', digits=2 ), " (",rank(maxDSS), ")")]
 
 
 RNGversion("3.6.2")
