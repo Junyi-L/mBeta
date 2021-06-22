@@ -122,10 +122,14 @@ comp <- data.frame(Model = Model_name,
 save(list = c("comp", "d", "hessian", "fit"),
      file = here::here("./Results/mBeta_fit_PW.RData"))
 
-d5 <- log(d[5])
-h5 <- sqrt(hessian[5])
-CIupper <- exp(d5 + 1.96 * 1/h5)
-CIlower <- exp(d5 - 1.96 * 1/h5)
+
+logd5 <- log(d[5])
+logse5 <- sqrt(1/hessian[5])
+CIupper <- exp(logd5 + 1.96 * logse5)
+CIlower <- exp(logd5 - 1.96 * logse5)
+round(c(Estimate = d[5], lower = CIlower, upper = CIupper), 2)
+## Estimate    lower    upper
+##     0.55     0.20     1.49
 
 
 printformat1 <- function(x) {
