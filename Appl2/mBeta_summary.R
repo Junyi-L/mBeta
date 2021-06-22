@@ -159,11 +159,11 @@ sum_table2$pvalue <- Per_list
 sum_table2_sub$pvalue <- Per_list2
 
 Model_name <- c(
-  "S1: $\\beta_{r,k} = \\beta_{k}$, $\\beta_{r}^{(\\nu)} = \\beta^{(\\nu)}$, $\\beta^{(\\phi)} = \\beta^{(\\phi)}$, $\\gamma_r = \\gamma$",
-  "S2: $\\beta_{r}^{(\\nu)} = \\beta^{(\\nu)}$, $\\beta^{(\\phi)} = \\beta^{(\\phi)}$, $\\gamma_r = \\gamma$",
-  "S3: $\\gamma_r = 0$",
-  "S4: $\\gamma_r = \\gamma$",
-  "S5: full model"
+  "M1*: $\\beta_{r,k} = \\beta_{k}$, $\\beta_{r}^{(\\nu)} = \\beta^{(\\nu)}$, $\\beta^{(\\phi)} = \\beta^{(\\phi)}$, $\\gamma_r = \\gamma$",
+  "M2*: $\\beta_{r}^{(\\nu)} = \\beta^{(\\nu)}$, $\\beta^{(\\phi)} = \\beta^{(\\phi)}$, $\\gamma_r = \\gamma$",
+  "M3*: $\\gamma_r = 0$",
+  "M4*: $\\gamma_r = \\gamma$",
+  "M5*: full model"
 )
 sum_table2$Model <- Model_name
 sum_table2_sub$Model <- Model_name
