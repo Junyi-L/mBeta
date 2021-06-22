@@ -95,7 +95,7 @@ for(r in 1:10){
       cex.axis = 0.8, mgp = c(1.5,0.5,0))
   hist(data[data_set.region == paste("Region",r),]$PIT,
        freq = FALSE,
-       ylab = "Relative Frequency",
+       ylab = "Density", ylim = c(0, 2),
        xlab = "",
        main = "")
   abline(h = 1, lty=2)
