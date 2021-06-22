@@ -92,7 +92,7 @@ for(r in 1:10){
       width = 1.94,
       height = 1.83)
   par(mar = c(1.5,2,0,0)+.5, cex.lab = 0.8, las = 1,
-      cex.axis = 0.8, mgp = c(1.5,0.5,0))
+      cex.axis = 0.8, mgp = c(1.6,0.5,0))
   hist(data[data_set.region == paste("Region",r),]$PIT,
        freq = FALSE,
        ylab = "Density", ylim = c(0, 2),
