@@ -38,12 +38,16 @@ The code consists of two parts
 
     * `Appl2/fit_mBeta.R` and `Appl2/forecast_mBeta.R` define functions to fit a mBeta model and forecast from it respectively using [**betareg**](https://CRAN.R-project.org/package=betareg)`::betareg()`.
     
-    * `Appl2/forecast_script.R` makes one-step-ahead forecast from mBeta models.
+    * `Appl2/forecast_script.R` makes one-step-ahead forecast from mBeta models using first-order neighbour matrix.
+        
+    * `Appl2/forecast_script_pw.R` makes one-step-ahead forecast from mBeta models using power-law model.
     
     * `Appl2/fan_plots.R` makes fan plots from forecasts of Model M4.
     
     * `Appl2/coef_plot.R` makes confidence interval plots of fitted full mBeta model.
     
     * `Appl2/mBeta_summary.R` compares forecast performance of mBeta models.
+    
+    * `Appl2/mBeta_pw_summary.R` compares forecast performance of mBeta models using power-law model.
     
 * `Results/` have been produced in R 3.6.2 using betareg 3.1-3 and forecast 8.12.
