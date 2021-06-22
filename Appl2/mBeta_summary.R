@@ -68,7 +68,7 @@ sum_table_sub <- setDT(result_table_avgR)[Inseason == TRUE ,
                                           by = .(season, Model)]
 
 setkey(sum_table_sub, season)
-# 
+#
 # library(ggplot2)
 # pdf(file = here::here("./Plots/mBeta_LS.pdf"), height = 6, width = 8)
 # ggplot(data = sum_table_sub, aes(x = season, y = LS, color = Model)) +
@@ -182,17 +182,17 @@ sum_table2$maxLS <- gsub("-","--",sum_table2$maxLS)
 sum_table2$DSS <- gsub("-","--",sum_table2$DSS)
 print(xtable(sum_table2, align = "lll|rrrr",
              caption = 'Model performance in terms of mean log score (LS),
-             mean Dawid-Sebastiani score (DSS), and maximum log score (maxLS)
+             maximum log score (maxLS), and mean Dawid-Sebastiani score (DSS)
              for one-week-ahead forecasts.
-             Ranks are shown in bracket.
-             The "all weeks" group shows average scores over the
+             Ranks are shown in brackets.
+             The "all weeks" section shows averages over the
              whole test period (208 weeks),
-             whereas the "High Incidence" group shows
-             averages over the high incidence periods only (132 weeks).
+             whereas the "high incidence" section includes
+             the high incidence periods only (132 weeks).
              Models are ordered by model complexity.
              The Monte Carlo p-values for differences in mean log scores
              are based on 9999 random permutations,
-             comparing each model against the best model (M5) in each subset.',
+             comparing each model against the best model in each subset.',
              label = "tab:forecast",
              digits = 2),
       type = "latex",
