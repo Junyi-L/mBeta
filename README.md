@@ -50,4 +50,4 @@ The code consists of two parts
     
     * `Appl2/mBeta_pw_summary.R` compares forecast performance of mBeta models using power-law model.
     
-* `Results/` have been produced in R 3.6.2 using betareg 3.1-3 and forecast 8.12.
+* `Results/` have been produced in R 4.1.0 using betareg 3.1-4 and forecast 8.15.
