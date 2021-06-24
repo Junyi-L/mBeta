@@ -24,17 +24,18 @@ data <- data.table(data)
 auto.beta <- function() {
 
   Try_BetaReg5 <- function(S_mean, S_Precision, lags, data){
-    mean_covar1 <- paste0(c(rep("sin_InPeriod",S_mean),rep("cos_InPeriod",S_mean)),1 : S_mean)
+    mean_AR <- paste0(rep("p", lags), seq_len(lags))
+    mean_covar1 <- paste0(c(rep("sin_InPeriod",S_mean),
+                            rep("cos_InPeriod",S_mean)), seq_len(S_mean))
     mean_covar2 <- c("x", "y")
-    mean_covar <- c(mean_covar1, mean_covar2)
+    mean_covar <- c(mean_AR, mean_covar1, mean_covar2)
     precision_covar <- c(paste0(c(rep("sin_InPeriod",S_Precision),
-                                  rep("cos_InPeriod",S_Precision)), 1 : S_Precision),
+                                  rep("cos_InPeriod",S_Precision)), seq_len(S_Precision)),
                          "SIndex")
 
-    mean_AR <- paste("weighted_ili_org ~", paste(paste0("p", 1 : lags), collapse = " + "))
-    mean_model <- paste(mean_AR, paste(mean_covar,collapse = " + "), sep = " + ")
-    precision_model <- paste(precision_covar, collapse = " + ")
-    full_model <- paste(mean_model, "|", precision_model)
+    mean_model <- paste0(mean_covar, collapse = " + ")
+    precision_model <- paste0(precision_covar, collapse = " + ")
+    full_model <- paste("weighted_ili_org ~", mean_model, "|", precision_model)
 
     res <- try(betareg(full_model,
                        data = data))
@@ -60,16 +61,17 @@ auto.beta <- function() {
   AICc <- numeric()
 
   for(p in 1:5){
-    for(h in 1:5){
-      for(k in 1:5){
-        combi[i] <- paste0("S_v = ", h, "S_{\\phi} = ", k, "lag = ", p)
+    for(h in 0:5){
+      for(k in 0:5){
+        combi[i] <- paste0("S_m = ", h, " S_p = ", k, " lag = ", p)
+        cat("---", combi[i], "---\n")
         model_hk_try <- Try_BetaReg5(S_mean = h, S_Precision = k, lags = p, data = train_data)
         if(is(model_hk_try,"try-error")){
           npar[i] <- 0
           LL[i] <- 0
           AIC[i] <- 0
           AICc[i] <- 0
-          res[[i]] <- list(S_mean = h, S_Precision = k, 0)
+          res[[i]] <- list(S_mean = h, S_Precision = k, NULL)
         }else{
           model_hk <- model_hk_try
           npar[i] <- dim(model_hk_try$vcov)[1]
@@ -94,12 +96,12 @@ if (FALSE) { # takes a few seconds and prints errors from failing fits
   Vali_table <- auto.beta()
   Vali_table[Vali_table$AICrank < 6,]
 }
-#                             npar       LL       AIC AICrank      AICc AICcrank
-# S_v = 3S_{\\phi} = 3lag = 4   21 4467.583 -8893.166       2 -8892.082        2
-# S_v = 3S_{\\phi} = 4lag = 4   23 4469.854 -8893.708       1 -8892.411        1
-# S_v = 4S_{\\phi} = 3lag = 4   23 4469.053 -8892.105       4 -8890.808        4
-# S_v = 4S_{\\phi} = 4lag = 4   25 4471.509 -8893.019       3 -8891.488        3
-# S_v = 3S_{\\phi} = 4lag = 5   24 4469.862 -8891.724       5 -8890.312        5
+##                         npar       LL       AIC AICrank      AICc AICcrank
+## S_m = 3 S_p = 3 lag = 4   21 4467.583 -8893.166       2 -8892.082        2
+## S_m = 3 S_p = 4 lag = 4   23 4469.854 -8893.708       1 -8892.411        1
+## S_m = 4 S_p = 3 lag = 4   23 4469.053 -8892.105       4 -8890.808        4
+## S_m = 4 S_p = 4 lag = 4   25 4471.509 -8893.019       3 -8891.488        3
+## S_m = 3 S_p = 4 lag = 5   24 4469.862 -8891.724       5 -8890.312        5
 ################################################################################
 
 lags <- 4

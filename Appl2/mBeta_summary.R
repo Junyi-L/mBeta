@@ -161,7 +161,7 @@ sum_table2_sub$pvalue <- Per_list2
 Model_name <- c(
   "M1*: $\\beta_{r,k} = \\beta_{k}$, $\\beta_{r}^{(\\nu)} = \\beta^{(\\nu)}$, $\\beta^{(\\phi)} = \\beta^{(\\phi)}$, $\\gamma_r = \\gamma$",
   "M2*: $\\beta_{r}^{(\\nu)} = \\beta^{(\\nu)}$, $\\beta^{(\\phi)} = \\beta^{(\\phi)}$, $\\gamma_r = \\gamma$",
-  "M3*: $\\gamma_r = 0$",
+  "M3: $\\gamma_r = 0$",
   "M4*: $\\gamma_r = \\gamma$",
   "M5*: full model"
 )

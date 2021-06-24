@@ -61,7 +61,7 @@ colnames(summary_table) <- c("Model", "Variant", "LL", "npar", "AIC","AICc","BIC
 
 library(xtable)
 print(xtable(summary_table, align = "ccl|rrrrr",
-             caption = 'Summaries of model fit.
+             caption = 'Goodness-of-fit criteria for univariate models of the national wILI time series.
              Ranks are shown in parantheses.
              The log-likelihood (LL) is ranked descending,
              and AIC, AICc, BIC are ranked ascending.
