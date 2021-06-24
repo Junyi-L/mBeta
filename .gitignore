@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+*.Rout
 /Plots/
 /Paper/
 /mbeta_paper/
