@@ -91,7 +91,7 @@ comp <- data.frame(Model = Model_name,
                    npar)
 
 print(xtable(comp, align = "ll|rrrrr",
-             caption = 'Summaries of model fit.
+             caption = 'Goodness-of-fit criteria for different mBeta models of the regional wILI time series.
              Models are ordered by complexity (number of estimated parameters, \"npar\").
              Ranks are shown in parantheses.
              The log-likelihood (LL) is ranked descending,
