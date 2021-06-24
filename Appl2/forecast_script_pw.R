@@ -114,13 +114,14 @@ Model_name <- c(
   "M5: full model"
 )
 comp <- data.frame(Model = Model_name,
-                   logLik,
+                   LL = logLik,
                    AIC,
                    AICc,
                    BIC,
                   npar)
 save(list = c("comp", "d", "hessian", "fit"),
-     file = here::here("./Results/mBeta_fit_PW.RData"))
+     file = here::here("./Results/mBeta_fit_PW.RData"),
+     compress = "xz")
 
 
 logd5 <- log(d[5])
@@ -138,7 +139,7 @@ printformat1 <- function(x) {
 printformat <- function(x) {
   paste0(formatC(round(x, digits = 0), format='f', digits=0 ), " (",rank(x), ")")
 }
-comp$logLik <- printformat1(comp$logLik)
+comp$LL <- printformat1(comp$LL)
 comp[, 3:5] <- sapply(comp[, 3:5], printformat)
 
 print(xtable(comp, align = "ll|rrrrr",
