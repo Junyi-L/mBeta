@@ -3,6 +3,7 @@ library(data.table)
 library(ggplot2)
 library(e1071)
 library(logitnorm)
+library(forecast)
 
 # prepare data
 load(file = here::here("./Data/data_holidays.RData"))
@@ -19,11 +20,16 @@ kurtosis(data$weighted_ili_org, na.rm = TRUE)
 source(file = here::here("./Appl1/Beta.R"))
 load(file = here::here("./Results/sarima_fit.RData"))
 
+## residual time-series, ACF, histogram
+checkresiduals(data_a$resid, test = FALSE, lag.max = 52)
+checkresiduals(sarima_fit$ARIMA_resid, test = FALSE, lag.max = 52)
 
+## residuals vs. fitted plots
 mean <- predict(Beta_lags_fit_a, data, type = "response")
 # Pearson residuals
 plot(mean, data_a$resid, ylim = c(-4,4), main = "beta")
 plot(plogis(sarima_fit$fitted), sarima_fit$ARIMA_resid, ylim = c(-4,4), main = "sarima")
+
 
 # Residuals on the original scale
 Beta_resid <- residuals(Beta_lags_fit_a, type = "response")
@@ -45,5 +51,5 @@ ARIMA_var <-  mapply(moment_ARIMA, mu = sarima_fit$fitted,
 
 ARIMA_resid <- data$weighted_ili_org - ARIMA_mean
 sarima_fit$ARIMA_resid <- ARIMA_resid
-plot(plogis(sarima_fit$fitted), sarima_fit$ARIMA_resid, 
+plot(plogis(sarima_fit$fitted), sarima_fit$ARIMA_resid,
      main = "sarima", ylim = c(-0.02, 0.02))
